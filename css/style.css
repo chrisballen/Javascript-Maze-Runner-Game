@@ -8,6 +8,9 @@ h1 {
 	font-family: 'Press Start 2P', cursive;
 	
 }
+p{
+	font-size:12px;
+}
 #monster-title {
 	
 	margin-bottom:0px;
@@ -29,7 +32,7 @@ h1 {
 	margin-bottom:20px;
 	
 }
-#timer {
+#timer, #score, #scoreMulti {
 	font-weight:bold;
 	font-size: 26px;
 }
@@ -38,4 +41,20 @@ h1 {
 }
 .canvas {
 	display:none;
+}
+
+.clear {
+	clear:both
+}
+.col-12 {
+	width:100%;
+	float:left;
+}
+.col-6 {
+	width:49%;
+	float:left;
+}
+.col-4 {
+	width:32%;
+	float:left;
 }

@@ -15,29 +15,42 @@
 <div class="container">
 	<div class="maze-container">
 	    <h1>Maze Runner</h1>
-	    <h3 id="monster-title">Select the number of Monsters</h3>
-	    
-	    <select id="monsterNum">
-	        <option value="">Choose Monster Total #</option>
-	        <option value="1">1</option>
-	        <option value="2">2</option>
-	        <option value="3">3</option>
-	        <option value="4">4</option>
-	        <option value="5">5</option>
-	        <option value="6">6</option>
-	        <option value="7">7</option>
-	        <option value="8">8</option>
-	        <option value="9">9</option>
-	        <option value="10">10</option>
-	        <option value="11">11</option>
-	        <option value="12">12</option>
-	        <option value="13">13</option>
-	        <option value="14">14</option>
-	
-	    </select>
+	    <div class="col-12">
+		    <h3 id="monster-title">Select the number of Monsters</h3>
+		    
+		    <select id="monsterNum">
+		        <option value="">Choose Monster Total #</option>
+		        <option value="1">1</option>
+		        <option value="2">2</option>
+		        <option value="3">3</option>
+		        <option value="4">4</option>
+		        <option value="5">5</option>
+		        <option value="6">6</option>
+		        <option value="7">7</option>
+		        <option value="8">8</option>
+		        <option value="9">9</option>
+		        <option value="10">10</option>
+		        <option value="11">11</option>
+		        <option value="12">12</option>
+		        <option value="13">13</option>
+		        <option value="14">14</option>
 		
-		<div>Timer</div>
-		<div id="timer">5:00</div>	
+		    </select>
+		</div>
+	    <div class="col-4">
+	    	<div>Score</div>
+			<div id="score">0</div>	
+	    </div>
+	    <div class="col-4">
+	    	<div>Score Multiplier</div>
+			<div id="scoreMulti">1</div>	
+	    </div>	    
+	    <div class="col-4">
+			<div>Timer</div>
+			<div id="timer">5:00</div>	
+		</div>	    
+		<div class="clear"></div>
+
 	    <canvas class="canvas" width="856" height="518" id="mazecanvas">Can't load the maze game, because your browser doesn't support HTML5.</canvas>
 	    <noscript>JavaScript is not enabled. To play the game, you should enable it.</noscript>
 	    
@@ -46,6 +59,7 @@
 			<p>The object of the game is to move your brown smiley face through the maze and exit the maze through the red door.  If
 			a blue monster touches you, the life you know is no more and you are dead.  You can only run within the maze.  You will 
 			have 5 mins to get through the maze.  If you do not make it through the maze in 5 mins the life you know will be no more.
+			Try and eat cake to score more points!  The more monsters you add the higher the score multiplier
 			</p>
 			<p>Good luck and stay alive!</p>
 		</div>

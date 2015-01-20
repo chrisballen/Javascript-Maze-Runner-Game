@@ -4,10 +4,15 @@ var context = canvas.getContext("2d");
 var myRectX = 840;
 var myRectY = 380;
 
+
+
+
+var score = 0;
+var scoreMultiplier= 1;
 var mazeWidth = 856;
 var mazeHeight = 542;
 var intervalVar;
-var timer = 180;
+var timer = 300;
 var gameState = true;
 
 window.onload = function() {		
@@ -20,8 +25,16 @@ function startMaze() {
    document.getElementById('monsterNum').style.display = 'none';
    document.getElementById('monster-title').style.display = 'none';
     var monsters = document.getElementById('monsterNum').value;
+    if(monsters > 4 && monsters < 11) scoreMultiplier = 2;
+    if(monsters > 10 && monsters < 14) scoreMultiplier = 3;
+    if(monsters == 14) scoreMultiplier = 5;
+    document.getElementById("scoreMulti").innerHTML = scoreMultiplier;
     for(var i = 0; i < monsters; i++ ) {
         buildMonster(i);
+    }
+    var prizes = 16;
+    for(var i = 0; i < prizes; i++ ) {
+        buildPrize(i);
     }
     document.getElementById('mazecanvas').style.display = 'block';
     window.addEventListener("keydown", moveMyRect, true);
@@ -31,9 +44,9 @@ function buildMonster(num) {
 	//monsters's pixel position
     switch(num) {
         case 0:
-        	var monsterX1 = 100;
+        	var monsterX1 = 40;
         	var monsterY1 = 430;
-            runAI(monsterX1, monsterY1, 4, true);
+            runAI(monsterX1, monsterY1, 3, true);
             break;
         case 1:
         	var monsterX2 = 110;
@@ -46,9 +59,9 @@ function buildMonster(num) {
             runAI(monsterX3, monsterY3, 4, true);
             break;        
         case 3:
-        	var monsterX4 = 360;
+        	var monsterX4 = 340;
         	var monsterY4 = 447;
-            runAI(monsterX4, monsterY4, 4, true);
+            runAI(monsterX4, monsterY4, 3, true);
             break;        
         case 4:
         	var monsterX5 = 660;
@@ -104,6 +117,94 @@ function buildMonster(num) {
             alert('you did not select a positive monster count');
     }   
 }
+function buildPrize(num) {
+	//monsters's pixel position
+    switch(num) {
+        case 0:
+        	var prizeX = 839;
+        	var prizeY = 360;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;
+        case 1:
+        	var prizeX = 839;
+        	var prizeY = 120;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 2:
+        	var prizeX = 675;
+        	var prizeY = 228;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 3:
+
+        	var prizeX = 360;
+        	var prizeY = 449;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 4:
+        	var prizeX = 105;
+        	var prizeY = 25;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 5:
+        	var prizeX = 516;
+        	var prizeY = 350;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 6:
+        	var prizeX = 57;
+        	var prizeY = 295;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;        
+        case 7:
+        	var prizeX = 227;
+        	var prizeY = 180;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 8:
+        	var prizeX = 365;
+        	var prizeY = 160;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 9:
+        	var prizeX = 315;
+        	var prizeY = 347;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 10:
+        	var prizeX = 40;
+        	var prizeY = 95;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 11:
+        	var prizeX = 278;
+        	var prizeY = 170;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 12:
+        	var prizeX = 390;
+        	var prizeY = 160;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;  
+        case 13:
+        	var prizeX = 547;
+        	var prizeY = 160;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;       
+        case 14:
+        	var prizeX = 40;
+        	var prizeY = 382;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;         
+        case 15:
+        	var prizeX = 40;
+        	var prizeY = 415;
+            drawPrize(-1, -1, prizeX, prizeY);
+            break;              
+        default:
+           
+    }   
+}
 
 
 function drawMaze() {
@@ -111,7 +212,7 @@ function drawMaze() {
     var mazeImg = new Image();
     mazeImg.onload = function () {
         context.drawImage(mazeImg, 0, 0);
-        drawRectangleMine(-1, -1, myRectX, myRectY);
+        drawMe(-1, -1, myRectX, myRectY);
     };
     mazeImg.src = "img/maze6.gif";
 }
@@ -185,13 +286,6 @@ function runAI(X, Y, key, firsttime) {
 	
 }
 
-function drawRectangle(X, Y, style) {
-    context.beginPath();
-    context.rect(X, Y, 15, 15);
-    context.closePath();
-    context.fillStyle = style;
-    context.fill();
-}
 function drawMonster(X, Y, newX, newY) {
     var monsterImg = new Image();
     monsterImg.onload = function () {
@@ -201,7 +295,7 @@ function drawMonster(X, Y, newX, newY) {
     };
     monsterImg.src = "img/monster1.gif";
 }
-function drawRectangleMine(X, Y, newX, newY) {
+function drawMe(X, Y, newX, newY) {
     var monsterImg = new Image();
     monsterImg.onload = function () {
     	if(newX != -1 && newY != -1) makeWhite(X, Y, 10, 10);
@@ -209,7 +303,16 @@ function drawRectangleMine(X, Y, newX, newY) {
         
     };
     monsterImg.src = "img/bear.gif";
-}        
+} 
+function drawPrize(X, Y, newX, newY) {
+    var cakeImg = new Image();
+    cakeImg.onload = function () {
+    	//if(X != -1 && Y != -1) makeWhite(newX, newY, 11, 11);
+        context.drawImage(cakeImg, newX, newY);
+        
+    };
+    cakeImg.src = "img/cake.gif";
+}
 function moveRect(X, Y, key) {
     var newX;
     var newY;
@@ -240,6 +343,13 @@ function moveRect(X, Y, key) {
         var result = [newX, newY];
         return result;
     }
+    else if (movingAllowed === 3) {
+//        makeWhite(X, Y, 11, 11);
+//    	drawPrize(-1, -1, X, Y);
+    	drawMonster(X, Y, newX, newY);
+        var result = [newX, newY];
+        return result;
+    }
 
     else {
     	return [-1, -1];
@@ -261,7 +371,7 @@ function canMoveTo(destX, destY, firsttime) {
 	                canMove = 0; // 0 means: the rectangle can't move
 	                break;
 	            }
-	            if (data[i] === 255 && data[i + 1] === 0 && data[i + 2] === 0) { // red
+	            else if (data[i] === 255 && data[i + 1] === 0 && data[i + 2] === 0) { // red
 	                canMove = 0; // 0 means: the rectangle can't move
 	                break;
 	            }                
@@ -270,6 +380,15 @@ function canMoveTo(destX, destY, firsttime) {
 	                yourDead();
 	                break;
 	            }
+	            else if (data[i] === 247 && data[i + 1] === 145 && data[i + 2] === 30) { // #00FF00
+	                canMove = 1; // 1 keep moving
+	            	
+	               // break;
+	            }   
+	            else if (data[i] === 90 && data[i + 1] === 204 && data[i + 2] === 200) { // #00FF00
+	                canMove = 1; // 1 keep moving
+	               // break;
+	            }  	            
 
 	        }
 	    }
@@ -294,6 +413,11 @@ function canMoveToPlayer(destX, destY) {
                 canMove = 2; // 2 means: monster killed you
                 break;
             }
+            else if (data[i] === 247 && data[i + 1] === 145 && data[i + 2] === 30) { // #00FF00
+                canMove = 1; // 1 keep moving
+                youScored();
+                break;
+            }            
             else if (data[i] === 255 && data[i + 1] === 0 && data[i + 2] === 0) { // #FF0000
             	canMove = 3; // 2 means: you won
             	youWon();
@@ -318,29 +442,11 @@ function createTimer(seconds) {
             secondsToShow = "0" + secondsToShow; // if the number of seconds is '5' for example, make sure that it is shown as '05'
         }
         
-        if(minutes < 2 ) document.getElementById("timer").style.color = "orange";
+        if(minutes < 3 ) document.getElementById("timer").style.color = "orange";
         if(minutes < 1 ) document.getElementById("timer").style.color = "red";
 		document.getElementById("timer").innerHTML = minutes.toString() + ":" + secondsToShow;
         seconds--;
     }, 1000);
-}
-function checkBadPixelArray(pix) {
-	if(badPixels.indexOf(pix) == -1) return false;
-	else return true;
-}
-function makeWhite(x, y, w, h) {
-    context.beginPath();
-    context.rect(x, y, w, h);
-    context.closePath();
-    context.fillStyle = "#FFFFFF";
-    context.fill();
-}
-function makeBlack(x, y, w, h) {
-    context.beginPath();
-    context.rect(x, y, w, h);
-    context.closePath();
-    context.fillStyle = "#000000";
-    context.fill();
 }
 function checkDirection (X, Y, key) {
 	var testX, testY;
@@ -469,27 +575,31 @@ function moveMyRect (e) {
     }
     movingAllowed = canMoveToPlayer(newX, newY);
     if (movingAllowed === 1) {      // 1 means 'the rectangle can move'
-        drawRectangleMine(myRectX, myRectY, newX, newY);
+        drawMe(myRectX, myRectY, newX, newY);
         myRectX = newX;
         myRectY = newY;
     }
-    else if (movingAllowed === 2) { // 2 means 'the rectangle reached the end point'
+    else if (movingAllowed === 2) { 
         yourDead();
         window.removeEventListener("keydown", moveMyRect, true);
     }
 }
 function yourDead() {
 	gameState = false;
-    clearInterval(intervalVar);
+	score = 0;
+	showScore();
     makeBlack(0, 0, canvas.width, canvas.height);
     context.font = "40px Arial";
     context.fillStyle = "white";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText("You're Dead!", canvas.width / 2, canvas.height / 2);
+    clearInterval(intervalVar);
 }
 function youWon() {
 	gameState = false;
+	score += scoreMultiplier * 100;
+	showScore();
     clearInterval(intervalVar);
     makeBlack(0, 0, canvas.width, canvas.height);
     context.font = "40px Arial";
@@ -498,5 +608,33 @@ function youWon() {
     context.textBaseline = "middle";
     context.fillText("You Won!", canvas.width / 2, canvas.height / 2);
 }
-		
+function youScored() {
+	score += scoreMultiplier * 5;
+	showScore();
+}
+function showScore() {
+	document.getElementById("score").innerHTML = score;
+}
+function makeWhite(x, y, w, h) {
+    context.beginPath();
+    context.rect(x, y, w, h);
+    context.closePath();
+    context.fillStyle = "#FFFFFF";
+    context.fill();
+}
+function makeBlack(x, y, w, h) {
+    context.beginPath();
+    context.rect(x, y, w, h);
+    context.closePath();
+    context.fillStyle = "#000000";
+    context.fill();
+}
+
+function drawRectangle(X, Y, style) {
+    context.beginPath();
+    context.rect(X, Y, 15, 15);
+    context.closePath();
+    context.fillStyle = style;
+    context.fill();
+}		
 		
