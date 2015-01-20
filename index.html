@@ -8,15 +8,50 @@
 	<title>Maze Runner</title>
 	<meta name="keywords" content="Maze Runner Game" />
 	<meta name="description" content="Maze Runner Game" />
-
+	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P|Electrolize' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
 </head>
 <body>
-    <h2>Maze Runner</h2>
+<div class="container">
+	<div class="maze-container">
+	    <h1>Maze Runner</h1>
+	    <h3 id="monster-title">Select the number of Monsters</h3>
+	    
+	    <select id="monsterNum">
+	        <option value="">Choose Monster Total #</option>
+	        <option value="1">1</option>
+	        <option value="2">2</option>
+	        <option value="3">3</option>
+	        <option value="4">4</option>
+	        <option value="5">5</option>
+	        <option value="6">6</option>
+	        <option value="7">7</option>
+	        <option value="8">8</option>
+	        <option value="9">9</option>
+	        <option value="10">10</option>
+	        <option value="11">11</option>
+	        <option value="12">12</option>
+	        <option value="13">13</option>
+	        <option value="14">14</option>
 	
-    <canvas width="882" height="542" id="mazecanvas">Can't load the maze game, because your browser doesn't support HTML5.</canvas>
-    <noscript>JavaScript is not enabled. To play the game, you should enable it.</noscript>
-	<div>Timer</div>
-	<div id="timer"></div>	
+	    </select>
+		
+		<div>Timer</div>
+		<div id="timer">5:00</div>	
+	    <canvas class="canvas" width="856" height="518" id="mazecanvas">Can't load the maze game, because your browser doesn't support HTML5.</canvas>
+	    <noscript>JavaScript is not enabled. To play the game, you should enable it.</noscript>
+	    
+	    <div class="rules">
+		    <h5>Game Rules:</h5>
+			<p>The object of the game is to move your brown smiley face through the maze and exit the maze through the red door.  If
+			a blue monster touches you, the life you know is no more and you are dead.  You can only run within the maze.  You will 
+			have 5 mins to get through the maze.  If you do not make it through the maze in 5 mins the life you know will be no more.
+			</p>
+			<p>Good luck and stay alive!</p>
+		</div>
+	
+	</div>    
+</div>    
 	<!--JS FILES STARTS-->
 	<script type="text/javascript" src="js/mazerunner.js"></script>	
 	

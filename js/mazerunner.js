@@ -1,53 +1,117 @@
 
 var canvas = document.getElementById("mazecanvas");
 var context = canvas.getContext("2d");
-
-//monsters's pixel position
-var monsterX1 = 100;
-var monsterY1 =  22;
-var monsterX2 = 110;
-var monsterY2 =  294;
-var monsterX3 = 585;
-var monsterY3 =  73;
-var monsterX4 = 360;
-var monsterY4 =  447;
-
-var monsterX5 = 660;
-var monsterY5 = 481;
-var monsterX6 = 415;
-var monsterY6 = 243;
-
-
 var myRectX = 840;
 var myRectY = 380;
 
 var mazeWidth = 856;
 var mazeHeight = 542;
-var badPixels = [];
 var intervalVar;
-var timer = 300;
+var timer = 180;
 var gameState = true;
 
-
 window.onload = function() {		
-    drawMaze();
-
-    window.addEventListener("keydown", moveMyRect, true);
-	runAI(monsterX1, monsterY1, 4, true);
-	runAI(monsterX2, monsterY2, 4, true);
-	runAI(monsterX3, monsterY3, 4, true);
-	runAI(monsterX4, monsterY4, 4, true);
-	runAI(monsterX5, monsterY5, 4, true);
-	runAI(monsterX6, monsterY6, 4, true);
-
-    createTimer(timer); //5 min timer
+    
+    var monsters = document.getElementById('monsterNum');
+    monsters.onchange = startMaze; 
 };
+function startMaze() {
+   drawMaze();
+   document.getElementById('monsterNum').style.display = 'none';
+   document.getElementById('monster-title').style.display = 'none';
+    var monsters = document.getElementById('monsterNum').value;
+    for(var i = 0; i < monsters; i++ ) {
+        buildMonster(i);
+    }
+    document.getElementById('mazecanvas').style.display = 'block';
+    window.addEventListener("keydown", moveMyRect, true);
+    createTimer(timer); //5 min timer  
+}
+function buildMonster(num) {
+	//monsters's pixel position
+    switch(num) {
+        case 0:
+        	var monsterX1 = 100;
+        	var monsterY1 = 430;
+            runAI(monsterX1, monsterY1, 4, true);
+            break;
+        case 1:
+        	var monsterX2 = 110;
+        	var monsterY2 = 294;
+            runAI(monsterX2, monsterY2, 4, true);
+            break;        
+        case 2:
+        	var monsterX3 = 585;
+        	var monsterY3 = 73;
+            runAI(monsterX3, monsterY3, 4, true);
+            break;        
+        case 3:
+        	var monsterX4 = 360;
+        	var monsterY4 = 447;
+            runAI(monsterX4, monsterY4, 4, true);
+            break;        
+        case 4:
+        	var monsterX5 = 660;
+        	var monsterY5 = 481;
+            runAI(monsterX5, monsterY5, 4, true);
+            break;        
+        case 5:
+        	var monsterX6 = 415;
+        	var monsterY6 = 243;
+            runAI(monsterX6, monsterY6, 4, true);
+            break;        
+        case 6:
+        	var monsterX7 = 100;
+        	var monsterY7 = 447;
+            runAI(monsterX7, monsterY7, 3, true);
+            break;        
+        case 7:
+        	var monsterX8 = 310;
+        	var monsterY8 = 100;
+            runAI(monsterX8, monsterY8, 4, true);
+            break;  
+        case 8:
+        	var monsterX9 = 548;
+        	var monsterY9 = 345;
+            runAI(monsterX9, monsterY9, 4, true);
+            break;  
+        case 9:
+        	var monsterX10 = 548;
+        	var monsterY10 = 192;
+            runAI(monsterX10, monsterY10, 4, true);
+            break;  
+        case 10:
+        	var monsterX11 = 90;
+        	var monsterY11 = 464;
+            runAI(monsterX11, monsterY11, 3, true);
+            break;  
+        case 11:
+        	var monsterX12 = 90;
+        	var monsterY12 = 498;
+            runAI(monsterX12, monsterY12, 4, true);
+            break;  
+        case 12:
+        	var monsterX13 = 701;
+        	var monsterY13 = 125;
+            runAI(monsterX13, monsterY13, 2, true);
+            break;  
+        case 13:
+        	var monsterX14 = 837;
+        	var monsterY14 = 400;
+            runAI(monsterX14, monsterY14, 2, true);
+            break;              
+        default:
+            alert('you did not select a positive monster count');
+    }   
+}
+
+
 function drawMaze() {
     makeWhite(0, 0, canvas.width, canvas.height);
     var mazeImg = new Image();
     mazeImg.onload = function () {
         context.drawImage(mazeImg, 0, 0);
-        drawRectangleMine(myRectX, myRectY, '#00FF00');
+        drawRectangleMine(-1, -1, myRectX, myRectY);
     };
     mazeImg.src = "img/maze6.gif";
 }
@@ -128,10 +192,23 @@ function drawRectangle(X, Y, style) {
     context.fillStyle = style;
     context.fill();
 }
-function drawRectangleMine(X, Y, style) {
-    makeWhite(X, Y, 10, 10);
-    context.fillStyle = style;
-    context.fillRect(X, Y, 10, 10);
+function drawMonster(X, Y, newX, newY) {
+    var monsterImg = new Image();
+    monsterImg.onload = function () {
+    	makeWhite(X, Y, 15, 15);
+        context.drawImage(monsterImg, newX, newY);
+        
+    };
+    monsterImg.src = "img/monster1.gif";
+}
+function drawRectangleMine(X, Y, newX, newY) {
+    var monsterImg = new Image();
+    monsterImg.onload = function () {
+    	if(newX != -1 && newY != -1) makeWhite(X, Y, 10, 10);
+        context.drawImage(monsterImg, newX, newY);
+        
+    };
+    monsterImg.src = "img/bear.gif";
 }        
 function moveRect(X, Y, key) {
     var newX;
@@ -159,8 +236,7 @@ function moveRect(X, Y, key) {
     movingAllowed = canMoveTo(newX, newY);
     
     if (movingAllowed === 1) {      // 1 means 'the rectangle can move'
-    	makeWhite(X, Y, 15, 15);
-        drawRectangle(newX, newY, "#0000FF");
+    	drawMonster(X, Y, newX, newY);
         var result = [newX, newY];
         return result;
     }
@@ -185,7 +261,11 @@ function canMoveTo(destX, destY, firsttime) {
 	                canMove = 0; // 0 means: the rectangle can't move
 	                break;
 	            }
-	            else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // #00FF00
+	            if (data[i] === 255 && data[i + 1] === 0 && data[i + 2] === 0) { // red
+	                canMove = 0; // 0 means: the rectangle can't move
+	                break;
+	            }                
+	            else if (data[i] === 200 && data[i + 1] === 136 && data[i + 2] === 75) { // #00FF00
 	                canMove = 2; // 2 means: monster killed you
 	                yourDead();
 	                break;
@@ -210,7 +290,7 @@ function canMoveToPlayer(destX, destY) {
                 canMove = 0; // 0 means: the rectangle can't move
                 break;
             }
-            else if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 255) { // #00FF00
+            else if (data[i] === 37 && data[i + 1] === 99 && data[i + 2] === 175) { // #00FF00
                 canMove = 2; // 2 means: monster killed you
                 break;
             }
@@ -237,6 +317,9 @@ function createTimer(seconds) {
         if (secondsToShow.length === 1) {
             secondsToShow = "0" + secondsToShow; // if the number of seconds is '5' for example, make sure that it is shown as '05'
         }
+        
+        if(minutes < 2 ) document.getElementById("timer").style.color = "orange";
+        if(minutes < 1 ) document.getElementById("timer").style.color = "red";
 		document.getElementById("timer").innerHTML = minutes.toString() + ":" + secondsToShow;
         seconds--;
     }, 1000);
@@ -366,28 +449,27 @@ function moveMyRect (e) {
         case 38:   // arrow up key
         case 87: // W key
             newX = myRectX;
-            newY = myRectY - 3;
+            newY = myRectY - 4;
             break;
         case 37: // arrow left key
         case 65: // A key
-            newX = myRectX - 3;
+            newX = myRectX - 4;
             newY = myRectY;
             break;
         case 40: // arrow down key
         case 83: // S key
             newX = myRectX;
-            newY = myRectY + 3;
+            newY = myRectY + 4;
             break;
         case 39: // arrow right key
         case 68: // D key
-            newX = myRectX +3;
+            newX = myRectX +4;
             newY = myRectY;
             break;
     }
     movingAllowed = canMoveToPlayer(newX, newY);
     if (movingAllowed === 1) {      // 1 means 'the rectangle can move'
-        drawRectangleMine(myRectX, myRectY, "#FFFFFF");
-        drawRectangleMine(newX, newY, "#00FF00");
+        drawRectangleMine(myRectX, myRectY, newX, newY);
         myRectX = newX;
         myRectY = newY;
     }

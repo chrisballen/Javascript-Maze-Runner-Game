@@ -1,0 +1,41 @@
+
+body {
+	background-color:#333;
+	font-family: 'Electrolize', sans-serif;
+	
+}
+h1 {
+	font-family: 'Press Start 2P', cursive;
+	
+}
+#monster-title {
+	
+	margin-bottom:0px;
+}
+.container{
+	background-color:#eee;
+	width:900px;
+	margin:auto;
+	height:100%;
+}
+
+.maze-container {
+	
+	padding:15px 20px;
+	text-align:center;
+}
+#monsterNum {
+	padding:10px 15px;
+	margin-bottom:20px;
+	
+}
+#timer {
+	font-weight:bold;
+	font-size: 26px;
+}
+.rules {
+	text-align:center;
+}
+.canvas {
+	display:none;
+}
