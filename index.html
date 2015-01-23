@@ -11,10 +11,10 @@
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P|Electrolize' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
 </head>
-<body>
+<body id="body">
 <div class="container">
 	<div class="maze-container">
-	    <h1>Maze Runner</h1>
+	    <h1 id="title">Maze Runner</h1>
 	    <div class="col-12">
 		    <h3 id="monster-title">Select the number of Monsters</h3>
 		    
@@ -37,30 +37,43 @@
 		
 		    </select>
 		</div>
-	    <div class="col-4">
-	    	<div>Score</div>
-			<div id="score">0</div>	
-	    </div>
-	    <div class="col-4">
-	    	<div>Score Multiplier</div>
-			<div id="scoreMulti">1</div>	
-	    </div>	    
-	    <div class="col-4">
-			<div>Timer</div>
-			<div id="timer">5:00</div>	
-		</div>	    
-		<div class="clear"></div>
+		<div id="dashboard">
+		    <div class="col-4">
+		    	<div>Score</div>
+				<div id="score">0</div>	
+		    </div>
+		    <div class="col-4">
+		    	<div>Score Multiplier</div>
+				<div id="scoreMulti">1</div>	
+		    </div>	    
+		    <div class="col-4">
+				<div>Timer</div>
+				<div id="timer">5:00</div>	
+
+			</div>
+			<div class="clear"></div>	
+	    	<div class="col-12">
+		   	 	<div id="monster-title">				
+		   	 		<div id="bomb-left" class="special-items"><img src="img/bomblarg.gif" /></div>
+					<div id="power-left" class="special-items"><img src="img/power.gif" /></div>
+				</div>		
+			</div>
+		</div>
+
 
 	    <canvas class="canvas" width="856" height="518" id="mazecanvas">Can't load the maze game, because your browser doesn't support HTML5.</canvas>
 	    <noscript>JavaScript is not enabled. To play the game, you should enable it.</noscript>
 	    
-	    <div class="rules">
-		    <h5>Game Rules:</h5>
-			<p>The object of the game is to move your brown smiley face through the maze and exit the maze through the red door.  If
-			a blue monster touches you, the life you know is no more and you are dead.  You can only run within the maze.  You will 
-			have 5 mins to get through the maze.  If you do not make it through the maze in 5 mins the life you know will be no more.
-			Try and eat cake to score more points!  The more monsters you add the higher the score multiplier
+ 	    <div id="rules" class="rules">
+		    <h3>Game Rules:</h3>
+			<p><span>Object of Game:</span>   Move your brown smiley face through the maze and exit the maze through the red door.
 			</p>
+			<p><span>Scoring:</span> Eat Cake to score even more points!  The more monsters you add, the higher the score multiplier will be.
+			</p>	
+			<p><span>Warning</span> If a blue monster touches you, you're dead . If the time limit
+			ends you're dead. 
+			</p>	
+			<p><span>Special Powers:</span>  Put the magical ring on and become invisible for 3 secs so that you are not eaten.  Be careful You can only use this once</p>
 			<p>Good luck and stay alive!</p>
 		</div>
 	

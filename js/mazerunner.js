@@ -14,6 +14,9 @@ var mazeHeight = 542;
 var intervalVar;
 var timer = 300;
 var gameState = true;
+var ringInUse = false;
+var ringUses = 0;
+var bombUses = 0;
 
 window.onload = function() {		
     
@@ -24,94 +27,100 @@ function startMaze() {
    drawMaze();
    document.getElementById('monsterNum').style.display = 'none';
    document.getElementById('monster-title').style.display = 'none';
+   document.getElementById('rules').style.display = 'none';
     var monsters = document.getElementById('monsterNum').value;
-    if(monsters > 4 && monsters < 11) scoreMultiplier = 2;
-    if(monsters > 10 && monsters < 14) scoreMultiplier = 3;
-    if(monsters == 14) scoreMultiplier = 5;
+    if(monsters > 2 && monsters < 4) scoreMultiplier = 2;
+    if(monsters > 3 && monsters < 6) scoreMultiplier = 3;
+    if(monsters > 5 && monsters < 8) scoreMultiplier = 4;
+    if(monsters > 7 && monsters < 12) scoreMultiplier = 5;
+    if(monsters > 11 && monsters < 114) scoreMultiplier = 8;
+    if(monsters == 14) scoreMultiplier = 10;
     document.getElementById("scoreMulti").innerHTML = scoreMultiplier;
     for(var i = 0; i < monsters; i++ ) {
-        buildMonster(i);
+    	var monsterImg = chooseMonster();
+        buildMonster(i, monsterImg);
     }
     var prizes = 16;
     for(var i = 0; i < prizes; i++ ) {
         buildPrize(i);
     }
     document.getElementById('mazecanvas').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'block';
     window.addEventListener("keydown", moveMyRect, true);
     createTimer(timer); //5 min timer  
 }
-function buildMonster(num) {
+function buildMonster(num, monsterImg) {
 	//monsters's pixel position
     switch(num) {
         case 0:
         	var monsterX1 = 40;
         	var monsterY1 = 430;
-            runAI(monsterX1, monsterY1, 3, true);
+            runAI(monsterX1, monsterY1, 3, monsterImg, true);
             break;
         case 1:
         	var monsterX2 = 110;
         	var monsterY2 = 294;
-            runAI(monsterX2, monsterY2, 4, true);
+            runAI(monsterX2, monsterY2, 4, monsterImg, true);
             break;        
         case 2:
         	var monsterX3 = 585;
         	var monsterY3 = 73;
-            runAI(monsterX3, monsterY3, 4, true);
+            runAI(monsterX3, monsterY3, 4, monsterImg, true);
             break;        
         case 3:
         	var monsterX4 = 340;
         	var monsterY4 = 447;
-            runAI(monsterX4, monsterY4, 3, true);
+            runAI(monsterX4, monsterY4, 3, monsterImg, true);
             break;        
         case 4:
         	var monsterX5 = 660;
         	var monsterY5 = 481;
-            runAI(monsterX5, monsterY5, 4, true);
+            runAI(monsterX5, monsterY5, 4, monsterImg, true);
             break;        
         case 5:
         	var monsterX6 = 415;
         	var monsterY6 = 243;
-            runAI(monsterX6, monsterY6, 4, true);
+            runAI(monsterX6, monsterY6, 4, monsterImg, true);
             break;        
         case 6:
         	var monsterX7 = 100;
         	var monsterY7 = 447;
-            runAI(monsterX7, monsterY7, 3, true);
+            runAI(monsterX7, monsterY7, 3, monsterImg, true);
             break;        
         case 7:
         	var monsterX8 = 310;
         	var monsterY8 = 100;
-            runAI(monsterX8, monsterY8, 4, true);
+            runAI(monsterX8, monsterY8, 4, monsterImg, true);
             break;  
         case 8:
         	var monsterX9 = 548;
         	var monsterY9 = 345;
-            runAI(monsterX9, monsterY9, 4, true);
+            runAI(monsterX9, monsterY9, 4, monsterImg, true);
             break;  
         case 9:
         	var monsterX10 = 548;
         	var monsterY10 = 192;
-            runAI(monsterX10, monsterY10, 4, true);
+            runAI(monsterX10, monsterY10, 4, monsterImg, true);
             break;  
         case 10:
         	var monsterX11 = 90;
         	var monsterY11 = 464;
-            runAI(monsterX11, monsterY11, 3, true);
+            runAI(monsterX11, monsterY11, 3, monsterImg, true);
             break;  
         case 11:
         	var monsterX12 = 90;
         	var monsterY12 = 498;
-            runAI(monsterX12, monsterY12, 4, true);
+            runAI(monsterX12, monsterY12, 4, monsterImg, true);
             break;  
         case 12:
         	var monsterX13 = 701;
         	var monsterY13 = 125;
-            runAI(monsterX13, monsterY13, 2, true);
+            runAI(monsterX13, monsterY13, 2, monsterImg, true);
             break;  
         case 13:
         	var monsterX14 = 837;
         	var monsterY14 = 400;
-            runAI(monsterX14, monsterY14, 2, true);
+            runAI(monsterX14, monsterY14, 2, monsterImg, true);
             break;              
         default:
             alert('you did not select a positive monster count');
@@ -216,7 +225,7 @@ function drawMaze() {
     };
     mazeImg.src = "img/maze6.gif";
 }
-function runAI(X, Y, key, firsttime) {
+function runAI(X, Y, key, monsterImg, firsttime) {
 	var result;
 	var keyUsed = "";
 	var possibleKey;
@@ -224,11 +233,11 @@ function runAI(X, Y, key, firsttime) {
 	if(firsttime) {
 		possibleKey = false;
 		isDeadendPoint = false;
-		moveRect(X, Y, key, true);
+		moveRect(X, Y, key, monsterImg, true);
 		var delay=200;
 	
 		setTimeout(function(){	
-				runAI(X, Y, key, false);
+				runAI(X, Y, key, monsterImg, false);
 		},delay);
 
 	} else {
@@ -238,20 +247,20 @@ function runAI(X, Y, key, firsttime) {
 		
 		if(isDeadendPoint) {
 			if(key == 1) {
-				result = moveRect(X, Y, 2, false);
+				result = moveRect(X, Y, 2, monsterImg, false);
 				keyUsed = 2;		
 			}
 			else if (key == 2) {
-				result = moveRect(X, Y, 1, false);
+				result = moveRect(X, Y, 1, monsterImg, false);
 				keyUsed = 1;
 	
 			}
 			else if (key == 3) {
-				result = moveRect(X, Y, 4, false);
+				result = moveRect(X, Y, 4, monsterImg, false);
 				keyUsed = 4;
 			}
 			else if (key == 4) {
-				result = moveRect(X, Y, 3, false);
+				result = moveRect(X, Y, 3, monsterImg, false);
 				keyUsed = 3;
 			}								
 		}
@@ -260,24 +269,24 @@ function runAI(X, Y, key, firsttime) {
 				if(possibleKey != false){				
 					possibleKeyArray = [key, possibleKey];
 					var i = Math.floor((Math.random() * 2) + 0);
-					result = moveRect(X, Y, possibleKeyArray[i], false);
+					result = moveRect(X, Y, possibleKeyArray[i], monsterImg, false);
 					keyUsed = possibleKeyArray[i];
 				}else {
 					keyUsed = key;
-					result = moveRect(X, Y, key, false);
+					result = moveRect(X, Y, key, monsterImg, false);
 				}
 			}
 			else {
-				result = moveRect(X, Y, possibleKey, false);
+				result = moveRect(X, Y, possibleKey, monsterImg, false);
 				keyUsed = possibleKey;
 			}				
 		}
 		if(gameState) {
 			setTimeout(function(){	
 				if(result[0] == -1 || result[1] == -1) {
-					runAI(X, Y, keyUsed, false);
+					runAI(X, Y, keyUsed, monsterImg, false);
 				} else {
-					runAI(result[0], result[1], keyUsed, false);
+					runAI(result[0], result[1], keyUsed,  monsterImg, false);
 				}
 			},delay);			
 		}
@@ -286,14 +295,23 @@ function runAI(X, Y, key, firsttime) {
 	
 }
 
-function drawMonster(X, Y, newX, newY) {
+function drawMonster(X, Y, newX, newY, imgSrc) {
     var monsterImg = new Image();
     monsterImg.onload = function () {
     	makeWhite(X, Y, 15, 15);
         context.drawImage(monsterImg, newX, newY);
         
     };
-    monsterImg.src = "img/monster1.gif";
+    monsterImg.src = imgSrc;
+}
+function chooseMonster() {
+    var monsterArray = ["img/monster1.gif", 
+                        "img/monster2.gif", 
+                        "img/monster3.gif", 
+                        "img/monster4.gif", 
+                        "img/monster5.gif"];
+	var i = Math.floor((Math.random() * 5) + 0);
+    return monsterArray[i];
 }
 function drawMe(X, Y, newX, newY) {
     var monsterImg = new Image();
@@ -304,6 +322,21 @@ function drawMe(X, Y, newX, newY) {
     };
     monsterImg.src = "img/bear.gif";
 } 
+function drawMeOnly(X, Y) {
+    var monsterImg = new Image();
+    monsterImg.onload = function () {
+        context.drawImage(monsterImg, X, Y);   
+    };
+    monsterImg.src = "img/bear.gif";
+    ringInUse = false;
+}
+function drawBomb(X, Y) {
+    var bombImg = new Image();
+    bombImg.onload = function () {
+        context.drawImage(bombImg, X, Y);   
+    };
+    bombImg.src = "img/bomb.gif";
+} 
 function drawPrize(X, Y, newX, newY) {
     var cakeImg = new Image();
     cakeImg.onload = function () {
@@ -313,7 +346,7 @@ function drawPrize(X, Y, newX, newY) {
     };
     cakeImg.src = "img/cake.gif";
 }
-function moveRect(X, Y, key) {
+function moveRect(X, Y, key, monsterImg) {
     var newX;
     var newY;
     var movingAllowed;
@@ -339,14 +372,14 @@ function moveRect(X, Y, key) {
     movingAllowed = canMoveTo(newX, newY);
     
     if (movingAllowed === 1) {      // 1 means 'the rectangle can move'
-    	drawMonster(X, Y, newX, newY);
+    	drawMonster(X, Y, newX, newY, monsterImg);
         var result = [newX, newY];
         return result;
     }
     else if (movingAllowed === 3) {
 //        makeWhite(X, Y, 11, 11);
 //    	drawPrize(-1, -1, X, Y);
-    	drawMonster(X, Y, newX, newY);
+    	drawMonster(X, Y, newX, newY, monsterImg);
         var result = [newX, newY];
         return result;
     }
@@ -375,7 +408,7 @@ function canMoveTo(destX, destY, firsttime) {
 	                canMove = 0; // 0 means: the rectangle can't move
 	                break;
 	            }                
-	            else if (data[i] === 200 && data[i + 1] === 136 && data[i + 2] === 75) { // #00FF00
+	            else if ( (data[i] === 200 && data[i + 1] === 136 && data[i + 2] === 75) ) { // #00FF00
 	                canMove = 2; // 2 means: monster killed you
 	                yourDead();
 	                break;
@@ -409,7 +442,12 @@ function canMoveToPlayer(destX, destY) {
                 canMove = 0; // 0 means: the rectangle can't move
                 break;
             }
-            else if (data[i] === 37 && data[i + 1] === 99 && data[i + 2] === 175) { // #00FF00
+            else if (  (data[i] === 37 && data[i + 1] === 99 && data[i + 2] === 175) ||
+            			(data[i] === 202 && data[i + 1] === 29 && data[i + 2] === 50) ||
+            			(data[i] === 207 && data[i + 1] === 130 && data[i + 2] === 41) ||
+            			(data[i] === 217 && data[i + 1] === 136 && data[i + 2] === 168) ||
+            			(data[i] === 154 && data[i + 1] === 208 && data[i + 2] === 145)
+            	    ) { 
                 canMove = 2; // 2 means: monster killed you
                 break;
             }
@@ -444,6 +482,9 @@ function createTimer(seconds) {
         
         if(minutes < 3 ) document.getElementById("timer").style.color = "orange";
         if(minutes < 1 ) document.getElementById("timer").style.color = "red";
+        if(seconds < 180 ) document.getElementById('bomb-left').style.opacity = '1';
+    	
+
 		document.getElementById("timer").innerHTML = minutes.toString() + ":" + secondsToShow;
         seconds--;
     }, 1000);
@@ -551,28 +592,41 @@ function moveFirstTime(X, Y, key) {
 }
 function moveMyRect (e) {
 	e = e || window.event;
-	switch (e.keyCode) {
-        case 38:   // arrow up key
-        case 87: // W key
-            newX = myRectX;
-            newY = myRectY - 4;
-            break;
-        case 37: // arrow left key
-        case 65: // A key
-            newX = myRectX - 4;
-            newY = myRectY;
-            break;
-        case 40: // arrow down key
-        case 83: // S key
-            newX = myRectX;
-            newY = myRectY + 4;
-            break;
-        case 39: // arrow right key
-        case 68: // D key
-            newX = myRectX +4;
-            newY = myRectY;
-            break;
-    }
+	if(ringInUse) {
+		return false;
+	} else {
+		
+		switch (e.keyCode) {
+        	case 13: // R key
+        		if(ringUses < 1) useRing(myRectX, myRectY);
+        		return false;
+        		break;		
+        	case 32: // R key
+        		if(bombUses < 1 && timer < 180) useBomb(myRectX, myRectY+10);
+    			break;            
+	        case 38:   // arrow up key
+	        case 87: // W key
+	            newX = myRectX;
+	            newY = myRectY - 4;
+	            break;
+	        case 37: // arrow left key
+	        case 65: // A key
+	            newX = myRectX - 4;
+	            newY = myRectY;
+	            break;
+	        case 40: // arrow down key
+	        case 83: // S key
+	            newX = myRectX;
+	            newY = myRectY + 4;
+	            break;
+	        case 39: // arrow right key
+	        case 68: // D key
+	            newX = myRectX +4;
+	            newY = myRectY;
+	            break;
+
+	    }
+	}
     movingAllowed = canMoveToPlayer(newX, newY);
     if (movingAllowed === 1) {      // 1 means 'the rectangle can move'
         drawMe(myRectX, myRectY, newX, newY);
@@ -612,6 +666,46 @@ function youScored() {
 	score += scoreMultiplier * 5;
 	showScore();
 }
+function useRing(X, Y) {
+	ringInUse = true;
+	ringUses++;
+	document.getElementById('power-left').innerHTML = '';
+
+	context.beginPath();
+    context.rect(X, Y, 12, 12);
+    context.closePath();
+    context.fillStyle = "#FFFFFF";
+    context.fill();
+    
+    document.getElementById("title").style.color = "#447799";
+    document.getElementById("body").style.background = "#447799";
+    
+	setTimeout(function(){	
+	    document.getElementById("title").style.color = "#333";
+	    document.getElementById("body").style.background = "#333";
+		drawMeOnly(X, Y);
+	},3000);
+
+}
+function useBomb(X, Y) {
+	drawBomb(X, Y);
+	document.getElementById('bomb-left').innerHTML = '';
+	setTimeout(function(){	
+		context.beginPath();
+	    context.rect(X, Y, 15, 15);
+	    context.closePath();
+	    context.fillStyle = "#FFFFFF";
+	    context.fill();
+	},3000);
+
+}
+function drawBomb(X, Y) {
+    var bombImg = new Image();
+    bombImg.onload = function () {
+        context.drawImage(bombImg, X, Y);   
+    };
+    bombImg.src = "img/bomb.gif";
+} 
 function showScore() {
 	document.getElementById("score").innerHTML = score;
 }
